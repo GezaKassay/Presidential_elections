@@ -1,4 +1,4 @@
-package com.project.presidential_elections.controllers;
+package com.project.presidential_elections.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,9 +1,10 @@
-package com.project.presidential_elections;
+package com.project.presidential_elections.repository;
 
+import com.project.presidential_elections.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    public UserEntity findByLoginAndPassword(String login, String password);
+    UserEntity findByEmail(String email);
 }
