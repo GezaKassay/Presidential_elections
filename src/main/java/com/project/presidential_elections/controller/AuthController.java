@@ -23,7 +23,7 @@ public class AuthController  {
         this.userService = userService;
     }
 
-    @GetMapping("/register")
+    @GetMapping("/presidential-elections/register")
     public String showRegistrationForm(Model model){
         // create model object to store form data
         UserDto user = new UserDto();
@@ -31,7 +31,7 @@ public class AuthController  {
         return "register";
     }
 
-    @PostMapping("/register/save")
+    @PostMapping("/presidential-elections/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,
                                BindingResult result,
                                Model model){
@@ -44,14 +44,14 @@ public class AuthController  {
 
         if (result.hasErrors()) {
             model.addAttribute("user", userDto);
-            return "/register";
+            return "/presidential-elections/register";
         }
 
         userService.saveUser(userDto);
-        return "redirect:/register?success";
+        return "redirect:/presidential-elections/register?success";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/presidential-elections/users")
     public String users(Model model){
         List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
