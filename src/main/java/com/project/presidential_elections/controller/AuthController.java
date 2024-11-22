@@ -15,15 +15,15 @@ import java.util.List;
 
 
 @Controller
-public class RegistrationController {
+public class AuthController  {
 
     private UserService userService;
 
-    public void AuthController(UserService userService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/presidential-elections/register")
+    @GetMapping("/register")
     public String showRegistrationForm(Model model){
         // create model object to store form data
         UserDto user = new UserDto();
