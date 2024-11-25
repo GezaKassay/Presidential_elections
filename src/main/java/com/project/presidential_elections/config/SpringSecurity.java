@@ -28,14 +28,15 @@ public class SpringSecurity {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/presidential-elections/register/**").permitAll()
-                                .requestMatchers("/presidential-elections/home").permitAll()
-                                .requestMatchers("/presidential-elections/users").hasRole("ADMIN")
+                        authorize.requestMatchers("/user/register").permitAll()
+                                .requestMatchers("/user/save").permitAll()
+                                .requestMatchers("/home").permitAll()
+                                .requestMatchers("/user/show-users").hasRole("ADMIN")
                 ).formLogin(
                         form -> form
-                                .loginPage("/presidential-elections/login")
-                                .loginProcessingUrl("/presidential-elections/login")
-                                .defaultSuccessUrl("/presidential-elections/users")
+                                .loginPage("/user/login")
+                                .loginProcessingUrl("/user/login")
+                                .defaultSuccessUrl("/user/show-users")
                                 .permitAll()
                 ).logout(
                         logout -> logout
