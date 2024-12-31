@@ -1,17 +1,14 @@
 package com.project.presidential_elections.security;
 
 import com.project.presidential_elections.entity.UserEntity;
-import com.project.presidential_elections.entity.RoleEntity;
 import com.project.presidential_elections.repository.UserRepository;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 public class CustomUserDetailsService  implements UserDetailsService {
@@ -29,16 +26,10 @@ public class CustomUserDetailsService  implements UserDetailsService {
         if (user != null) {
             return new org.springframework.security.core.userdetails.User(user.getEmail(),
                     user.getPassword(),
-                    mapRolesToAuthorities(user.getRoles()));
-        }else{
+                    List.of(new SimpleGrantedAuthority(user.getRole()))
+        );
+        } else {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-    }
-
-    private Collection < ? extends GrantedAuthority> mapRolesToAuthorities(Collection <RoleEntity> roles) {
-        Collection < ? extends GrantedAuthority> mapRoles = roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
-        return mapRoles;
     }
 }

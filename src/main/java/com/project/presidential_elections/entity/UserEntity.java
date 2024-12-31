@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -30,11 +32,16 @@ public class UserEntity {
     @Column(nullable=false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinTable(
-            name="users_roles",
-            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
-            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
-    private List<RoleEntity> roles = new ArrayList<>();
+    @Column
+    private String role;
 
+    @Column
+    private String shortDescription;
+
+    @Column
+    private Integer voted;
+
+    public List<String> getRolesAsList() {
+        return role != null ? Arrays.asList(role.split(",")) : Collections.emptyList();
+    }
 }
