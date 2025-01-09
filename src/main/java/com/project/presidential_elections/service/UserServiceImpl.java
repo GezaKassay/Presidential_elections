@@ -56,4 +56,5 @@ public class UserServiceImpl implements UserService {
         userDto.setRole(user.getRole());
         return userDto;
     }
+
 }
