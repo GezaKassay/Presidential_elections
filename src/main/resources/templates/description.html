@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
     <title>Presidential Elections</title>
@@ -26,35 +26,8 @@
     </div>
 </nav>
 <div class="container">
-    <div class="row col-md-10">
-        <h2>Welcome,
-        <span sec:authentication="name"></span></h2>
-    </div>
-</div>
-<div class="container">
-    <div class="row col-md-10">
-        <h2>List of Registered Users</h2>
-    </div>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Short Description</th>
-            <th>Role</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each = "user : ${users}">
-            <td th:text = "${user.firstName}"></td>
-            <td th:text = "${user.lastName}"></td>
-            <td th:text = "${user.email}"></td>
-            <td th:text = "${user.shortDescription}"></td>
-            <td th:text = "${user.role}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <h2>Provide a short description</h2>
+
 </div>
 </body>
 </html>

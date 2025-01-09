@@ -61,4 +61,10 @@ public class UserController {
         model.addAttribute("users", users);
         return "users";
     }
+
+    @GetMapping("/user/description")
+    public String description() {
+        return "description";
+    }
+
 }

@@ -6,11 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -41,7 +36,4 @@ public class UserEntity {
     @Column
     private Integer voted;
 
-    public List<String> getRolesAsList() {
-        return role != null ? Arrays.asList(role.split(",")) : Collections.emptyList();
-    }
 }
