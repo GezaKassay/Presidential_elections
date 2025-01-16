@@ -62,9 +62,17 @@ public class UserController {
         return "users";
     }
 
-    @GetMapping("/user/description")
-    public String description() {
+    @GetMapping("/user/account")
+    public String viewUserAccountForm(Model model) {
+        UserDto userDto = userService.getCurrentUser();
+        model.addAttribute("user", userDto);
         return "description";
+    }
+
+    @PostMapping("/user/description/save")
+    public String saveDescription(@ModelAttribute("user") UserDto userDto) {
+     //   userService.saveUser(userDto);
+        return "redirect:/user/show-users";
     }
 
 }

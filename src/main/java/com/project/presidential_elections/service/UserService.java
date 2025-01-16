@@ -11,4 +11,6 @@ public interface UserService {
     UserEntity findUserByEmail(String email);
 
     List<UserDto> findAllUsers();
+
+    UserDto getCurrentUser();
 }

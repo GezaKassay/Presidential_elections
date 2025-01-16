@@ -3,6 +3,7 @@ package com.project.presidential_elections.service;
 import com.project.presidential_elections.entity.UserEntity;
 import com.project.presidential_elections.dto.UserDto;
 import com.project.presidential_elections.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,18 @@ public class UserServiceImpl implements UserService {
         return users.stream()
                 .map((user) -> mapToUserDto(user))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto getCurrentUser() {
+        // Get the currently authenticated user's username (or principal)
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Retrieve the user entity from the repository using the username
+        UserEntity userEntity = userRepository.findByEmail(currentUsername);
+
+        // Map the UserEntity to UserDto
+        return mapToUserDto(userEntity);
     }
 
     private UserDto mapToUserDto(UserEntity user){
