@@ -13,4 +13,6 @@ public interface UserService {
     List<UserDto> findAllUsers();
 
     UserDto getCurrentUser();
+
+    void saveDescription(UserDto userDto);
 }

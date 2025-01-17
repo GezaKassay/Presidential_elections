@@ -21,20 +21,17 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/user/account}">View User Account</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
 <div class="container">
     <div class="row col-md-10">
-        <h2>Welcome,
-        <span sec:authentication="name"></span></h2>
-        <a th:href="@{/user/account}" class="btn btn-primary">View User Account</a>
-    </div>
-</div>
-<div class="container">
-    <div class="row col-md-10">
-        <h2>List of Registered Users</h2>
+        <h2>List of Candidates</h2>
     </div>
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
@@ -43,16 +40,16 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Short Description</th>
-            <th>Role</th>
+            <th>Votes</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each = "user : ${users}">
+        <tr th:each = "user : ${users}" th:if="${user.role} == 'ROLE_CANDIDATE'">
             <td th:text = "${user.firstName}"></td>
             <td th:text = "${user.lastName}"></td>
             <td th:text = "${user.email}"></td>
-            <td th:text = "${user.shortDescription}"></td>
-            <td th:text = "${user.role}"></td>
+            <td th:text = "${#strings.abbreviate(user.shortDescription,50)}"></td>
+            <td th:text = "${user.numVotes}"></td>
         </tr>
         </tbody>
     </table>

@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         if (user.getRole() == null) {
-            user.setRole("ROLE_ADMIN");
+            user.setRole("ROLE_USER");
         }
         // encrypt the password using spring security
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -49,14 +49,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getCurrentUser() {
-        // Get the currently authenticated user's username (or principal)
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        // Retrieve the user entity from the repository using the username
         UserEntity userEntity = userRepository.findByEmail(currentUsername);
-
-        // Map the UserEntity to UserDto
         return mapToUserDto(userEntity);
+    }
+
+    @Override
+    public void saveDescription(UserDto userDto) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository.findByEmail(currentUsername);
+        user.setShortDescription(userDto.getShortDescription());
+        user.setRole("ROLE_CANDIDATE");
+        userRepository.save(user);
     }
 
     private UserDto mapToUserDto(UserEntity user){
@@ -67,6 +71,7 @@ public class UserServiceImpl implements UserService {
         userDto.setEmail(user.getEmail());
         userDto.setShortDescription(user.getShortDescription());
         userDto.setRole(user.getRole());
+        userDto.setNumVotes(user.getNumVotes());
         return userDto;
     }
 

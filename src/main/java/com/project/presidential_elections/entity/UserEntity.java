@@ -30,10 +30,10 @@ public class UserEntity {
     @Column
     private String role;
 
-    @Column
+    @Column(length = 1000000)
     private String shortDescription;
 
     @Column
-    private Integer voted;
+    private Integer numVotes;
 
 }
