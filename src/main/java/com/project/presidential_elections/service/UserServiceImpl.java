@@ -54,15 +54,6 @@ public class UserServiceImpl implements UserService {
         return mapToUserDto(userEntity);
     }
 
-    @Override
-    public void saveDescription(UserDto userDto) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserEntity user = userRepository.findByEmail(currentUsername);
-        user.setShortDescription(userDto.getShortDescription());
-        user.setRole("ROLE_CANDIDATE");
-        userRepository.save(user);
-    }
-
     private UserDto mapToUserDto(UserEntity user){
         UserDto userDto = new UserDto();
         String[] str = user.getName().split(" ");
@@ -75,4 +66,19 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    @Override
+    public void saveDescription(UserDto userDto) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository.findByEmail(currentUsername);
+        user.setShortDescription(userDto.getShortDescription());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateRole(UserDto userDto) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository.findByEmail(currentUsername);
+        user.setRole("ROLE_CANDIDATE");
+        userRepository.save(user);
+    }
 }

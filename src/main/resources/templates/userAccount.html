@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
     <title>Presidential Elections</title>
@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/home}">Registration and Login System</a>
+        <a class="navbar-brand" th:href="@{/home}">2024 Presidential Elections</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -22,37 +22,36 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/user/account}">View User Account</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/user/show-candidates}">View List of Candidates</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-
 <div class="container">
-    <div class="row col-md-10">
-        <h2>List of Candidates</h2>
-    </div>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Short Description</th>
-            <th>Votes</th>
+    <table>
+        <tr th:object="${user}">
+            <th class="table-primary">First Name:</th>
+            <td th:text="${user.firstName}"></td>
         </tr>
-        </thead>
-        <tbody>
-        <tr th:each = "user : ${users}" th:if="${user.role} == 'ROLE_CANDIDATE'">
-            <td th:text = "${user.firstName}"></td>
-            <td th:text = "${user.lastName}"></td>
-            <td th:text = "${user.email}"></td>
-            <td th:text = "${#strings.abbreviate(user.shortDescription,50)}"></td>
-            <td th:text = "${user.numVotes}"></td>
+        <tr th:object="${user}">
+            <th class="table-primary">Last Name:</th>
+            <td th:text="${user.lastName}"></td>
         </tr>
-        </tbody>
+        <tr th:object="${user}">
+            <th class="table-primary">Email address:</th>
+            <td th:text="${user.email}"></td>
+        </tr>
+        <tr th:object="${user}">
+            <th class="table-primary">Short description:</th>
+            <td> <p th:text="${user.shortDescription}"></p></td>
+            <td><a th:href="@{/user/description}" class="btn btn-primary">Update/Edit</a></td>
+        </tr>
     </table>
+    <br>
+    <form action="#" th:action="@{/user/candidate/apply}" th:object="${user}" method="POST">
+        <button type="submit" class="btn btn-primary">Apply for Presidency</button>
+    </form>
 </div>
 </body>
 </html>

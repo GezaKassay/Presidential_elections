@@ -15,4 +15,6 @@ public interface UserService {
     UserDto getCurrentUser();
 
     void saveDescription(UserDto userDto);
+
+    void updateRole(UserDto userDto);
 }

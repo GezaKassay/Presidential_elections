@@ -55,15 +55,22 @@ public class UserController {
         return "redirect:/user/register?success";
     }
 
-    @GetMapping("/user/show-users")
+    @GetMapping("/user/show-candidates")
     public String users(Model model){
         List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
-        return "users";
+        return "candidates";
     }
 
     @GetMapping("/user/account")
     public String viewUserAccountForm(Model model) {
+        UserDto userDto = userService.getCurrentUser();
+        model.addAttribute("user", userDto);
+        return "userAccount";
+    }
+
+    @GetMapping("/user/description")
+    public String editUserDescription(Model model) {
         UserDto userDto = userService.getCurrentUser();
         model.addAttribute("user", userDto);
         return "description";
@@ -72,7 +79,12 @@ public class UserController {
     @PostMapping("/user/description/save")
     public String saveDescription(@ModelAttribute("user") UserDto userDto) {
         userService.saveDescription(userDto);
-        return "redirect:/user/show-users";
+        return "redirect:/user/account";
     }
 
+    @PostMapping("/user/candidate/apply")
+    public String updateRole(@ModelAttribute("user") UserDto userDto) {
+        userService.updateRole(userDto);
+        return "redirect:/user/show-candidates";
+    }
 }
