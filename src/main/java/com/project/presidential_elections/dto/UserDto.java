@@ -27,4 +27,5 @@ public class UserDto {
     private String role;
     private String shortDescription;
     private Integer numVotes;
+    private Integer voted;
 }

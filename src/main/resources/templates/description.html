@@ -29,9 +29,10 @@
     <h1>Provide a short description</h1>
     <form action="#" th:action="@{/user/description/save}" th:object="${user}" method="POST">
 
-            <input type="text" th:field="*{shortDescription}" class="form-control mb-4 col-4">
+        <label for="shortDescription"></label>
+            <input type="text" id="shortDescription" th:field="*{shortDescription}" class="form-control mb-4 col-4">
 
-            <button type="submit" class="btn btn-primary"> Save Description </button>
+        <button type="submit" class="btn btn-primary"> Save Description </button>
     </form>
 </div>
 </body>

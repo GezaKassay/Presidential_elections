@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
@@ -42,7 +43,7 @@ public class UserController {
         UserEntity existingUser = userService.findUserByEmail(userDto.getEmail());
 
         if (existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()) {
-            result.rejectValue("email", null,
+            result.rejectValue("email", "101",
                 "There is already an account registered with the same email");
         }
 
@@ -85,6 +86,19 @@ public class UserController {
     @PostMapping("/user/candidate/apply")
     public String updateRole(@ModelAttribute("user") UserDto userDto) {
         userService.updateRole(userDto);
+        return "redirect:/user/show-candidates";
+    }
+
+    @GetMapping("/user/candidate-profile/{id}")
+    public String showCandidateProfile(@PathVariable(value = "id") long id, Model model) {
+        UserDto user = userService.getById(id);
+        model.addAttribute("user", user);
+        return "candidateProfile";
+    }
+
+    @PostMapping("/user/candidate-profile/{id}/vote")
+    public String updateVote(@PathVariable(value = "id") long id, @ModelAttribute("user") UserDto userDto) {
+        userService.updateVote(userDto, id);
         return "redirect:/user/show-candidates";
     }
 }

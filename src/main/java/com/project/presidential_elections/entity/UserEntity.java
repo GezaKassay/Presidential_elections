@@ -36,4 +36,6 @@ public class UserEntity {
     @Column
     private Integer numVotes;
 
+    @Column
+    private Integer voted;
 }

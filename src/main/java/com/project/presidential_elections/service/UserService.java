@@ -17,4 +17,8 @@ public interface UserService {
     void saveDescription(UserDto userDto);
 
     void updateRole(UserDto userDto);
+
+    UserDto getById(long id);
+
+    void updateVote(UserDto userDto, long id);
 }

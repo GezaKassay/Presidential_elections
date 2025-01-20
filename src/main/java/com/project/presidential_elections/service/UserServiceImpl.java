@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAllUsers() {
         List<UserEntity> users = userRepository.findAll();
         return users.stream()
-                .map((user) -> mapToUserDto(user))
+                .map(this::mapToUserDto)
                 .collect(Collectors.toList());
     }
 
@@ -54,8 +54,15 @@ public class UserServiceImpl implements UserService {
         return mapToUserDto(userEntity);
     }
 
+    @Override
+    public UserDto getById(long id) {
+        UserEntity user = userRepository.getReferenceById(id);
+        return mapToUserDto(user);
+    }
+
     private UserDto mapToUserDto(UserEntity user){
         UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
         String[] str = user.getName().split(" ");
         userDto.setFirstName(str[0]);
         userDto.setLastName(str[1]);
@@ -63,6 +70,7 @@ public class UserServiceImpl implements UserService {
         userDto.setShortDescription(user.getShortDescription());
         userDto.setRole(user.getRole());
         userDto.setNumVotes(user.getNumVotes());
+        userDto.setVoted(user.getVoted());
         return userDto;
     }
 
@@ -80,5 +88,20 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userRepository.findByEmail(currentUsername);
         user.setRole("ROLE_CANDIDATE");
         userRepository.save(user);
+    }
+
+    @Override
+    public void updateVote(UserDto userDto, long id) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository.findByEmail(currentUsername);
+        user.setVoted(Integer.valueOf("1"));
+        userRepository.save(user);
+        UserEntity candidate = userRepository.getReferenceById(id);
+        if (candidate.getNumVotes() == null) {
+            candidate.setNumVotes(0);
+        }
+        int votes = candidate.getNumVotes();
+        candidate.setNumVotes(votes + 1);
+        userRepository.save(candidate);
     }
 }

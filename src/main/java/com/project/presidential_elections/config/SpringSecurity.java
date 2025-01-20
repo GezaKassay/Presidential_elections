@@ -16,8 +16,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SpringSecurity {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+
+    public SpringSecurity(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -36,6 +39,9 @@ public class SpringSecurity {
                                 .requestMatchers("/user/description").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .requestMatchers("/user/description/save").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .requestMatchers("/user/candidate/apply").hasAnyRole("ADMIN", "CANDIDATE", "USER")
+                                .requestMatchers("/user/candidate-profile/{id}").hasAnyRole("ADMIN", "CANDIDATE", "USER")
+                                .requestMatchers("/user/candidate-profile/{id}/vote").hasAnyRole("ADMIN", "CANDIDATE", "USER")
+                                .anyRequest().authenticated()
                 ).formLogin(
                         form -> form
                                 .loginPage("/user/login")
