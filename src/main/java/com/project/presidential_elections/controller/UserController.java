@@ -92,7 +92,9 @@ public class UserController {
     @GetMapping("/user/candidate-profile/{id}")
     public String showCandidateProfile(@PathVariable(value = "id") long id, Model model) {
         UserDto user = userService.getById(id);
+        UserDto currentUser = userService.getCurrentUser();
         model.addAttribute("user", user);
+        model.addAttribute("currentUser", currentUser);
         return "candidateProfile";
     }
 

@@ -31,8 +31,33 @@
 <br /><br />
 <div class="container">
     <div class="row">
-        <h1 class="text-center"> Welcome to the 2024 Presidential Elections </h1>
+        <h1 class="text-center">Welcome to the 2024 Presidential Elections !</h1>
     </div>
+    <br>
+    <br>
+    <div class="row">
+        <h2 class="text-center">Current standings:</h2>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Short Description</th>
+            <th>Total # of votes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each = "user : ${users}" th:if="${user.role} == 'ROLE_CANDIDATE'">
+            <td th:text = "${user.firstName}"></td>
+            <td th:text = "${user.lastName}"></td>
+            <td th:text = "${user.email}"></td>
+            <td th:text = "${#strings.abbreviate(user.shortDescription,50)}"></td>
+            <td th:text = "${user.numVotes}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

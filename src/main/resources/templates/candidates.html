@@ -41,7 +41,6 @@
             <th>Email</th>
             <th>Short Description</th>
             <th>View Candidate's profile</th>
-            <th>NR. Votes</th>
         </tr>
         </thead>
         <tbody>
@@ -51,7 +50,6 @@
             <td th:text = "${user.email}"></td>
             <td th:text = "${#strings.abbreviate(user.shortDescription,50)}"></td>
             <td><a th:href="@{/user/candidate-profile/{id}(id=${user.id})}" class="btn btn-primary">View profile</a></td>
-            <td th:text = "${user.numVotes}"></td>
         </tr>
         </tbody>
     </table>

@@ -47,7 +47,7 @@
             <td> <p th:text="${user.shortDescription}"></p></td>
         </tr>
     </table>
-    <form action="#" th:action="@{/user/candidate-profile/{id}/vote(id=${user.id})}" method="POST">
+    <form action="#" th:action="@{/user/candidate-profile/{id}/vote(id=${user.id})}" method="POST" th:if="${currentUser.voted} == null">
         <button type="submit" class="btn btn-primary"> Vote this candidate </button>
     </form>
 </div>
