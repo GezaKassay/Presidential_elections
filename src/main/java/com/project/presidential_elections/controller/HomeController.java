@@ -19,7 +19,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String users(Model model){
+    public String userStandings(Model model){
         List<UserDto> users = userService.findAllUsers();
         List<UserDto> sortedUsers = users.stream()
                                          .sorted(Comparator.comparing(UserDto -> UserDto.getNumVotes() == null ? 0 : UserDto.getNumVotes(), Comparator.reverseOrder()))

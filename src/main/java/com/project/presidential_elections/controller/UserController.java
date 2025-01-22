@@ -83,23 +83,23 @@ public class UserController {
         return "redirect:/user/account";
     }
 
-    @PostMapping("/user/candidate/apply")
+    @PostMapping("/user/apply")
     public String updateRole(@ModelAttribute("user") UserDto userDto) {
         userService.updateRole(userDto);
         return "redirect:/user/show-candidates";
     }
 
-    @GetMapping("/user/candidate-profile/{id}")
+    @GetMapping("/candidate/profile/{id}")
     public String showCandidateProfile(@PathVariable(value = "id") long id, Model model) {
-        UserDto user = userService.getById(id);
+        UserDto candidate = userService.getById(id);
         UserDto currentUser = userService.getCurrentUser();
-        model.addAttribute("user", user);
+        model.addAttribute("candidate", candidate);
         model.addAttribute("currentUser", currentUser);
         return "candidateProfile";
     }
 
-    @PostMapping("/user/candidate-profile/{id}/vote")
-    public String updateVote(@PathVariable(value = "id") long id, @ModelAttribute("user") UserDto userDto) {
+    @PostMapping("/candidate/profile/{id}/vote")
+    public String updateVote(@PathVariable(value = "id") long id, UserDto userDto) {
         userService.updateVote(userDto, id);
         return "redirect:/user/show-candidates";
     }

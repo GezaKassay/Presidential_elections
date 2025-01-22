@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/home}">2024 Presidential Elections</a>
+        <a class="navbar-brand" th:href="@{/home}">2025 Presidential Election's Standings</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -31,7 +31,10 @@
 <br /><br />
 <div class="container">
     <div class="row">
-        <h1 class="text-center">Welcome to the 2024 Presidential Elections !</h1>
+        <h1 class="text-center">Welcome to the 2025 Presidential Election !</h1>
+    </div>
+    <div class="row">
+        <a class="text-center">In order to vote for a candidate or to become a candidate, please register and log in to this system.</a>
     </div>
     <br>
     <br>
@@ -44,7 +47,6 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-            <th>Short Description</th>
             <th>Total # of votes</th>
         </tr>
         </thead>
@@ -53,7 +55,6 @@
             <td th:text = "${user.firstName}"></td>
             <td th:text = "${user.lastName}"></td>
             <td th:text = "${user.email}"></td>
-            <td th:text = "${#strings.abbreviate(user.shortDescription,50)}"></td>
             <td th:text = "${user.numVotes}"></td>
         </tr>
         </tbody>

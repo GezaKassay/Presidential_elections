@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/home}">2024 Presidential Elections</a>
+        <a class="navbar-brand" th:href="@{/home}">2025 Presidential Election's Standings</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -30,24 +30,24 @@
 </nav>
 <div class="container">
     <table>
-        <tr th:object="${user}">
+        <tr th:object="${candidate}">
             <th class="table-primary">First Name:</th>
-            <td th:text="${user.firstName}"></td>
+            <td th:text="${candidate.firstName}"></td>
         </tr>
-        <tr th:object="${user}">
+        <tr th:object="${candidate}">
             <th class="table-primary">Last Name:</th>
-            <td th:text="${user.lastName}"></td>
+            <td th:text="${candidate.lastName}"></td>
         </tr>
-        <tr th:object="${user}">
+        <tr th:object="${candidate}">
             <th class="table-primary">Email address:</th>
-            <td th:text="${user.email}"></td>
+            <td th:text="${candidate.email}"></td>
         </tr>
-        <tr th:object="${user}">
+        <tr th:object="${candidate}">
             <th class="table-primary">Short description:</th>
-            <td> <p th:text="${user.shortDescription}"></p></td>
+            <td> <p th:text="${candidate.shortDescription}"></p></td>
         </tr>
     </table>
-    <form action="#" th:action="@{/user/candidate-profile/{id}/vote(id=${user.id})}" method="POST" th:if="${currentUser.voted} == null">
+    <form action="#" th:action="@{/candidate/profile/{id}/vote(id=${candidate.id})}" method="POST" th:if="${currentUser.voted} == null">
         <button type="submit" class="btn btn-primary"> Vote this candidate </button>
     </form>
 </div>
