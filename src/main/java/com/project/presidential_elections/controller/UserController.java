@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import com.project.presidential_elections.dto.UserDto;
 import com.project.presidential_elections.service.UserService;
 
 import java.util.List;
-
 
 @Controller
 public class UserController {
@@ -56,21 +54,21 @@ public class UserController {
         return "redirect:/user/register?success";
     }
 
-    @GetMapping("/user/show-candidates")
+    @GetMapping("/user/home-page")
     public String users(Model model){
         List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
-        return "candidates";
+        return "userPage";
     }
 
-    @GetMapping("/user/account")
+    @GetMapping("/user/details")
     public String viewUserAccountForm(Model model) {
         UserDto userDto = userService.getCurrentUser();
         model.addAttribute("user", userDto);
         return "userAccount";
     }
 
-    @GetMapping("/user/description")
+    @GetMapping("/user/description/page")
     public String editUserDescription(Model model) {
         UserDto userDto = userService.getCurrentUser();
         model.addAttribute("user", userDto);
@@ -80,27 +78,6 @@ public class UserController {
     @PostMapping("/user/description/save")
     public String saveDescription(@ModelAttribute("user") UserDto userDto) {
         userService.saveDescription(userDto);
-        return "redirect:/user/account";
-    }
-
-    @PostMapping("/user/apply")
-    public String updateRole(@ModelAttribute("user") UserDto userDto) {
-        userService.updateRole(userDto);
-        return "redirect:/user/show-candidates";
-    }
-
-    @GetMapping("/candidate/profile/{id}")
-    public String showCandidateProfile(@PathVariable(value = "id") long id, Model model) {
-        UserDto candidate = userService.getById(id);
-        UserDto currentUser = userService.getCurrentUser();
-        model.addAttribute("candidate", candidate);
-        model.addAttribute("currentUser", currentUser);
-        return "candidateProfile";
-    }
-
-    @PostMapping("/candidate/profile/{id}/vote")
-    public String updateVote(@PathVariable(value = "id") long id, UserDto userDto) {
-        userService.updateVote(userDto, id);
-        return "redirect:/user/show-candidates";
+        return "redirect:/user/details";
     }
 }

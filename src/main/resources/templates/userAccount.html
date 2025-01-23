@@ -22,7 +22,7 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/user/show-candidates}">View List of Candidates</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/user/home-page}">View List of Candidates</a>
                 </li>
             </ul>
         </div>
@@ -45,11 +45,11 @@
         <tr th:object="${user}">
             <th class="table-primary">Short description:</th>
             <td> <p th:text="${user.shortDescription}"></p></td>
-            <td><a th:href="@{/user/description}" class="btn btn-primary">Update/Edit</a></td>
+            <td><a th:href="@{/user/description/page}" class="btn btn-primary">Update/Edit</a></td>
         </tr>
     </table>
     <br>
-    <form action="#" th:action="@{/user/apply}" th:object="${user}" method="POST">
+    <form action="#" th:action="@{/candidate/apply}" th:object="${user}" method="POST">
         <button type="submit" class="btn btn-primary">Run for President</button>
     </form>
 </div>

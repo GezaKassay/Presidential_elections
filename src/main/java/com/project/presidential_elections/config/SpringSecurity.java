@@ -34,11 +34,11 @@ public class SpringSecurity {
                         authorize.requestMatchers("/user/register").permitAll()
                                 .requestMatchers("/user/save").permitAll()
                                 .requestMatchers("/home").permitAll()
-                                .requestMatchers("/user/show-candidates").hasAnyRole("ADMIN", "CANDIDATE", "USER")
+                                .requestMatchers("/user/home-page").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .requestMatchers("/user/account").hasAnyRole("ADMIN", "CANDIDATE", "USER")
-                                .requestMatchers("/user/description").hasAnyRole("ADMIN", "CANDIDATE", "USER")
+                                .requestMatchers("/user/description/page").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .requestMatchers("/user/description/save").hasAnyRole("ADMIN", "CANDIDATE", "USER")
-                                .requestMatchers("/user/apply").hasAnyRole("ADMIN", "CANDIDATE", "USER")
+                                .requestMatchers("/candidate/apply").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .requestMatchers("/candidate/profile/{id}").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .requestMatchers("/candidate/profile/{id}/vote").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .anyRequest().authenticated()
@@ -46,7 +46,7 @@ public class SpringSecurity {
                         form -> form
                                 .loginPage("/user/login")
                                 .loginProcessingUrl("/user/login")
-                                .defaultSuccessUrl("/user/show-candidates")
+                                .defaultSuccessUrl("/user/home-page")
                                 .permitAll()
                 ).logout(
                         logout -> logout
