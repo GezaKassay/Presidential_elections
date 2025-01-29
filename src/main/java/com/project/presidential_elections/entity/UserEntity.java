@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="election_1")
-public class UserEntity {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

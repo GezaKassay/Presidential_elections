@@ -1,11 +1,14 @@
 package com.project.presidential_elections.service;
 
+import com.project.presidential_elections.entity.FirstRound;
+import com.project.presidential_elections.entity.SecondRound;
 import com.project.presidential_elections.entity.UserEntity;
 import com.project.presidential_elections.dto.UserDto;
 import com.project.presidential_elections.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,17 +16,34 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final HttpSession session;
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(HttpSession session, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.session = session;
+    }
+
+    private UserEntity useTable(String electionsName) {
+        switch (electionsName) {
+            case "FirstRound":
+                return new FirstRound();
+            case "SecondRound":
+                return new SecondRound();
+           // case "ThirdRound":
+           //     return new ThirdRound();
+            default:
+                throw new IllegalArgumentException("Invalid election name: " + electionsName);
+        }
     }
 
     @Override
     public void saveUser(UserDto userDto) {
-        UserEntity user = new UserEntity();
+        String electionsName = (String) session.getAttribute("electionsName");
+        UserEntity user = useTable(electionsName);
         user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         if (user.getRole() == null) {
