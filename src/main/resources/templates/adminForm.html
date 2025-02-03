@@ -27,10 +27,10 @@
 </nav>
 <div class="container">
     <h1>Form</h1>
-    <form action="#" th:action="@{/submit}" th:object="${elections}" method="post">
+    <form action="#" th:action="@{/form/submit}" method="post">
         <label for="elections">Select an Election:</label>
         <select id="elections" name="electionsName">
-            <option th:each="elections : ${elections}" th:value="${elections.name}" th:text="${elections.name}"></option>
+            <option th:each="election : ${elections}" th:value="${election.name}" th:text="${election.name}"></option>
         </select>
         <button type="submit">Submit</button>
     </form>

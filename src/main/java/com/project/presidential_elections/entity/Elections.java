@@ -18,4 +18,5 @@ public class Elections {
 
     @Column(nullable=false, unique=true)
     private String name;
+
 }

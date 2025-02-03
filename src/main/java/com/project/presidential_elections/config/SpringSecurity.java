@@ -36,7 +36,7 @@ public class SpringSecurity {
                                 .requestMatchers("/user/save").permitAll()
                                 .requestMatchers("/home").permitAll()
                                 .requestMatchers("/form").permitAll()
-                                .requestMatchers("/submit").permitAll()
+                                .requestMatchers("/form/submit").permitAll()
                                 .requestMatchers("/user/home-page").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .requestMatchers("/user/account").hasAnyRole("ADMIN", "CANDIDATE", "USER")
                                 .requestMatchers("/user/description/page").hasAnyRole("ADMIN", "CANDIDATE", "USER")
@@ -54,6 +54,8 @@ public class SpringSecurity {
                 ).logout(
                         logout -> logout
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .invalidateHttpSession(false)
+                                .clearAuthentication(true)
                                 .permitAll()
                 );
         return http.build();

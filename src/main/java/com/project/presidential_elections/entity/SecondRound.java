@@ -9,6 +9,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "SecondRound")
-public class SecondRound extends UserEntity {
+public class SecondRound extends RoundEntity {
 }
