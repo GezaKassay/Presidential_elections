@@ -28,9 +28,7 @@ public class AdminController {
                 new Elections("2", "SecondRound"),
                 new Elections("3", "ThirdRound")
         );
-
         electionsRepository.saveAll(elections);
-
         model.addAttribute("elections", elections);
         return "adminForm";
     }

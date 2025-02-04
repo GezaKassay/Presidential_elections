@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,7 +51,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         String electionsName = (String) session.getAttribute("electionsName");
-        System.out.println("Received electionsName: " + electionsName);
         if (electionsName == null) {
             throw new IllegalStateException("Elections name is not set in session");
         }
@@ -98,14 +96,15 @@ public class UserServiceImpl implements UserService {
         userDto.setRole(user.getRole());
 
         String electionsName = (String) session.getAttribute("electionsName");
-        RoundEntity round = useTable(electionsName);
+        RoundEntity round = user.getRounds().stream()
+                .filter(r -> r.getClass().getSimpleName().equals(electionsName))
+                .findFirst()
+                .orElse(null);
 
-        Optional<RoundEntity> userRound = user.getRounds().stream()
-                .filter(r -> r.getId() == round.getId()) // Match round ID
-                .findFirst();
-
-        userDto.setNumVotes(userRound.map(RoundEntity::getNumVotes).orElse(0));
-        userDto.setVoted(userRound.map(RoundEntity::getVoted).orElse(0));
+        if (round != null) {
+            userDto.setNumVotes(round.getNumVotes());
+            userDto.setVoted(round.getNumVotes());
+        }
 
         return userDto;
     }
@@ -132,32 +131,29 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userRepository.findByEmail(currentUsername);
 
         String electionsName = (String) session.getAttribute("electionsName");
-        RoundEntity round = useTable(electionsName);
+        RoundEntity round = user.getRounds().stream()
+                .filter(r -> r.getClass().getSimpleName().equals(electionsName))
+                .findFirst()
+                .orElse(null);
 
-        Optional<RoundEntity> userRound = user.getRounds().stream()
-                .filter(r -> r.getId() == round.getId())
-                .findFirst();
-
-        if (userRound.isPresent() && userRound.get().getVoted() != null && userRound.get().getVoted() == 1) {
-            throw new IllegalStateException("User has already voted in this round");
+        if (round != null) {
+            round.setVoted(Integer.valueOf("1"));
+            roundRepository.save(round);
+            userDto.setVoted(round.getVoted());
+            System.out.println(userDto.getVoted());
         }
 
-        round.setVoted(Integer.valueOf("1"));
-        roundRepository.save(round);
-
         UserEntity candidate = userRepository.getReferenceById(id);
+        RoundEntity candidateRound = candidate.getRounds().stream()
+                .filter(r -> r.getClass().getSimpleName().equals(electionsName))
+                .findFirst()
+                .orElse(null);
 
-        Optional<RoundEntity> candidateRound = candidate.getRounds().stream()
-                .filter(r -> r.getId() == round.getId())
-                .findFirst();
-
-        if (candidateRound.isPresent()) {
-            RoundEntity candidateVoteRound = candidateRound.get();
-            int votes = candidateVoteRound.getNumVotes() != null ? candidateVoteRound.getNumVotes() : 0;
-            candidateVoteRound.setNumVotes(votes + 1);
-            roundRepository.save(candidateVoteRound);
-        } else {
-            throw new IllegalStateException("Candidate is not part of this round");
+        if (candidateRound != null) {
+           int votes = (candidateRound.getNumVotes() != null) ? candidateRound.getNumVotes() : 0;
+            candidateRound.setNumVotes(votes + 1);
+            roundRepository.save(candidateRound);
+            userDto.setNumVotes(candidateRound.getNumVotes());
         }
     }
 }
