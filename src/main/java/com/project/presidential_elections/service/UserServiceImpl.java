@@ -96,16 +96,14 @@ public class UserServiceImpl implements UserService {
         userDto.setRole(user.getRole());
 
         String electionsName = (String) session.getAttribute("electionsName");
-        RoundEntity round = user.getRounds().stream()
-                .filter(r -> r.getClass().getSimpleName().equals(electionsName))
-                .findFirst()
-                .orElse(null);
+        RoundEntity round = getRoundForCurrentElection(user);
 
         if (round != null) {
             userDto.setNumVotes(round.getNumVotes());
-            userDto.setVoted(round.getNumVotes());
+            userDto.setVoted(round.getVoted());
+            userDto.setCurrentRound(electionsName);
+            userDto.setIsCandidate(round.getIsCandidate());
         }
-
         return userDto;
     }
 
@@ -121,8 +119,13 @@ public class UserServiceImpl implements UserService {
     public void updateRole(UserDto userDto) {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = userRepository.findByEmail(currentUsername);
-        user.setRole("ROLE_CANDIDATE");
-        userRepository.save(user);
+
+        RoundEntity round = getRoundForCurrentElection(user);
+
+        if (round != null) {
+            round.setIsCandidate(Integer.valueOf("1"));
+            roundRepository.save(round);
+        }
     }
 
     @Override
@@ -130,30 +133,28 @@ public class UserServiceImpl implements UserService {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = userRepository.findByEmail(currentUsername);
 
-        String electionsName = (String) session.getAttribute("electionsName");
-        RoundEntity round = user.getRounds().stream()
-                .filter(r -> r.getClass().getSimpleName().equals(electionsName))
-                .findFirst()
-                .orElse(null);
+        RoundEntity round = getRoundForCurrentElection(user);
 
         if (round != null) {
             round.setVoted(Integer.valueOf("1"));
             roundRepository.save(round);
-            userDto.setVoted(round.getVoted());
-            System.out.println(userDto.getVoted());
         }
 
         UserEntity candidate = userRepository.getReferenceById(id);
-        RoundEntity candidateRound = candidate.getRounds().stream()
+        RoundEntity candidateRound = getRoundForCurrentElection(candidate);
+
+        if (candidateRound != null) {
+            int votes = (candidateRound.getNumVotes() != null) ? candidateRound.getNumVotes() : 0;
+            candidateRound.setNumVotes(votes + 1);
+            roundRepository.save(candidateRound);
+        }
+    }
+
+    private RoundEntity getRoundForCurrentElection(UserEntity user) {
+        String electionsName = (String) session.getAttribute("electionsName");
+        return user.getRounds().stream()
                 .filter(r -> r.getClass().getSimpleName().equals(electionsName))
                 .findFirst()
                 .orElse(null);
-
-        if (candidateRound != null) {
-           int votes = (candidateRound.getNumVotes() != null) ? candidateRound.getNumVotes() : 0;
-            candidateRound.setNumVotes(votes + 1);
-            roundRepository.save(candidateRound);
-            userDto.setNumVotes(candidateRound.getNumVotes());
-        }
     }
 }

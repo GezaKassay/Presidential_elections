@@ -54,7 +54,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each = "user : ${users}" th:if="${user.role} == 'ROLE_CANDIDATE'">
+        <tr th:each = "user : ${users}" th:if="${user.currentRound eq electionsName and user.getIsCandidate() > 0}" >
+
             <td th:text = "${user.firstName}"></td>
             <td th:text = "${user.lastName}"></td>
             <td th:text = "${user.email}"></td>

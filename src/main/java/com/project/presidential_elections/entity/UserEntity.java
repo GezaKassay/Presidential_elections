@@ -34,6 +34,6 @@ public class UserEntity {
     @Column(length = 1000000)
     private String shortDescription;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RoundEntity> rounds;
 }

@@ -28,4 +28,6 @@ public class UserDto {
     private String shortDescription;
     private Integer numVotes;
     private Integer voted;
+    private String currentRound;
+    private Integer isCandidate;
 }

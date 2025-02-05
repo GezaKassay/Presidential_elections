@@ -24,6 +24,9 @@ public abstract class RoundEntity {
     @Column
     private Integer voted;
 
+    @Column
+    private Integer isCandidate;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private UserEntity user;

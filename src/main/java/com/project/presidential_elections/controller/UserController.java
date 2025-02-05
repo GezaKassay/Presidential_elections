@@ -1,6 +1,7 @@
 package com.project.presidential_elections.controller;
 
 import com.project.presidential_elections.entity.UserEntity;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,9 +56,11 @@ public class UserController {
     }
 
     @GetMapping("/user/home-page")
-    public String users(Model model){
+    public String users(Model model, HttpSession session){
         List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
+        String electionsName = (String) session.getAttribute("electionsName");
+        model.addAttribute("electionsName", electionsName);
         return "userPage";
     }
 
