@@ -2,6 +2,7 @@ package com.project.presidential_elections.controller;
 
 import com.project.presidential_elections.entity.Elections;
 import com.project.presidential_elections.repository.ElectionsRepository;
+import com.project.presidential_elections.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,11 @@ import java.util.List;
 public class AdminController {
 
     private final ElectionsRepository electionsRepository;
+    private UserService userService;
 
-    public AdminController(ElectionsRepository electionsRepository) {
+    public AdminController(ElectionsRepository electionsRepository, UserService userService) {
         this.electionsRepository = electionsRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/form")
@@ -36,6 +39,7 @@ public class AdminController {
     @PostMapping("/form/submit")
     public String submitForm(@RequestParam("electionsName") String electionsName, HttpSession session) {
         session.setAttribute("electionsName", electionsName);
+        userService.associateUsersWithNewRound();
         return "redirect:/home";
     }
 }

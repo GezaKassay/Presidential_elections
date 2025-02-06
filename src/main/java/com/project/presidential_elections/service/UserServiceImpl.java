@@ -60,6 +60,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void associateUsersWithNewRound() {
+        String electionsName = (String) session.getAttribute("electionsName");
+        if (electionsName == null) {
+            throw new IllegalStateException("Elections name is not set in session");
+        }
+
+        List<UserEntity> allUsers = userRepository.findAll();
+        for (UserEntity existingUser : allUsers) {
+            RoundEntity newRound = useTable(electionsName);
+            newRound.setUser(existingUser);
+            System.out.println("nothing comes from here");
+            System.out.println(existingUser.getId());
+            roundRepository.save(newRound);
+        }
+    }
+
+    @Override
     public UserEntity findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }

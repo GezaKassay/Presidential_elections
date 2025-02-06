@@ -6,7 +6,10 @@ import com.project.presidential_elections.dto.UserDto;
 import java.util.List;
 
 public interface UserService {
+    
     void saveUser(UserDto userDto);
+
+    void associateUsersWithNewRound();
 
     UserEntity findUserByEmail(String email);
 
