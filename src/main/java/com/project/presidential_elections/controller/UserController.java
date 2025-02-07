@@ -61,7 +61,9 @@ public class UserController {
         model.addAttribute("users", users);
         String electionsName = (String) session.getAttribute("electionsName");
         model.addAttribute("electionsName", electionsName);
-        return "userPage";
+        UserDto userDto = userService.getCurrentUser();
+        model.addAttribute("currentUser", userDto);
+        return "userLoginPage";
     }
 
     @GetMapping("/user/details")

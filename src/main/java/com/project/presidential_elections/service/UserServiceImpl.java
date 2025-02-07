@@ -1,9 +1,6 @@
 package com.project.presidential_elections.service;
 
-import com.project.presidential_elections.entity.FirstRound;
-import com.project.presidential_elections.entity.RoundEntity;
-import com.project.presidential_elections.entity.SecondRound;
-import com.project.presidential_elections.entity.UserEntity;
+import com.project.presidential_elections.entity.*;
 import com.project.presidential_elections.dto.UserDto;
 import com.project.presidential_elections.repository.RoundRepository;
 import com.project.presidential_elections.repository.UserRepository;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +32,7 @@ public class UserServiceImpl implements UserService {
         return switch (electionsName) {
             case "FirstRound" -> new FirstRound();
             case "SecondRound" -> new SecondRound();
+            case "ThirdRound" -> new ThirdRound();
             default -> throw new IllegalArgumentException("Invalid election name: " + electionsName);
         };
     }
@@ -46,7 +45,9 @@ public class UserServiceImpl implements UserService {
         if (user.getRole() == null) {
             user.setRole("ROLE_USER");
         }
-        // encrypt the password using spring security
+        if (Objects.equals(user.getEmail(), "kassay_geza@yahoo.com")) {
+            user.setRole("ROLE_ADMIN");
+        }
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(user);
 
@@ -65,14 +66,13 @@ public class UserServiceImpl implements UserService {
         if (electionsName == null) {
             throw new IllegalStateException("Elections name is not set in session");
         }
-
         List<UserEntity> allUsers = userRepository.findAll();
         for (UserEntity existingUser : allUsers) {
             RoundEntity newRound = useTable(electionsName);
-            newRound.setUser(existingUser);
-            System.out.println("nothing comes from here");
-            System.out.println(existingUser.getId());
-            roundRepository.save(newRound);
+            if (!roundRepository.existsByUserAndRoundType(existingUser, newRound.getClass())) {
+                newRound.setUser(existingUser);
+                roundRepository.save(newRound);
+            }
         }
     }
 
