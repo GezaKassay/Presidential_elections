@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private RoundEntity useTable(String electionsName) throws IllegalArgumentException {
         return switch (electionsName) {
-            case "FirstRound" -> new FirstRound();
+            case "", "FirstRound" -> new FirstRound();
             case "SecondRound" -> new SecondRound();
             case "ThirdRound" -> new ThirdRound();
             default -> throw new IllegalArgumentException("Invalid election name: " + electionsName);

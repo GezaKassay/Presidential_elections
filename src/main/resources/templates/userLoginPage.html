@@ -25,9 +25,12 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/user/details}">View User Account</a>
                 </li>
                 <th:block th:if="${currentUser != null and #lists.contains(currentUser.role, 'ROLE_ADMIN')}">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/form}">Select election</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/form}">Select election</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/new-round}">Create new election</a>
+                    </li>
                 </th:block>
             </ul>
         </div>
